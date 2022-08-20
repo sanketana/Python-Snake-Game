@@ -1,0 +1,8 @@
+- Snake dies when it hits the edges
+- Snake dies when it hits its own body
+- Show score on the screen
+- Show Game over screen
+- Try to add black border on body parts
+- Grid
+- Sound effects
+- Corner edges
