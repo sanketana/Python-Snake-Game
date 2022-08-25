@@ -2,16 +2,22 @@ import pygame
 import random
 
 class Food:
-    size = 15
     color = (255, 0, 0)
-    x = random.randint(15, 640-15)
-    y = random.randint(15, 480-15)   
-    rect = pygame.Rect(x, y, size, size) 
+    grid_x = 25
+    grid_y = 16   
+
+
+    def __init__(self, gridsize):
+        self.size = gridsize
+        self.size = gridsize
+        self.x, self.y = self.grid_x * gridsize, self.grid_y * gridsize        
+        self.rect = pygame.Rect(self.x, self.y, self.size, self.size)         
 
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, self.rect)    
+        pygame.draw.rect(screen, self.color, self.rect)    
 
     def teleport(self):
-        self.x = random.randint(15, 640-15)
-        self.y = random.randint(15, 480-15)   
+        self.x = self.size * random.randint(0, 40)
+        self.y = self.size * random.randint(0, 30)   
         self.rect = pygame.Rect(self.x, self.y, self.size, self.size) 

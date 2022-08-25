@@ -1,22 +1,32 @@
 import pygame
 
 class Snake:
-    size = 15
-    color = (255, 255, 255)
-    x = 100
-    y = 100
+    border_color = (200, 200, 200)
+    border_size = 2
+    body_color = (255, 255, 255)
+    grid_x = 10
+    grid_y = 16
     direction = ''
-    #body = pygame.Rect(x, y, size, size)
-    part1 = pygame.Rect(100, 100, size, size)
-    part2 = pygame.Rect(115, 100, size, size)
-    part3 = pygame.Rect(130, 100, size, size)
-    part4 = pygame.Rect(130, 115, size, size)
-    body = [part1, part2, part3, part4]
     grow = False
+
+    def __init__(self, gridsize):
+        self.size = gridsize
+        self.x, self.y = self.grid_x * gridsize, self.grid_y * gridsize
+        self.part1 = pygame.Rect(self.x, self.y, self.size, self.size)
+        self.part2 = pygame.Rect(self.x + self.size, self.y, self.size, self.size)
+        self.part3 = pygame.Rect(self.x + self.size*2, self.y, self.size, self.size)
+        self.part4 = pygame.Rect(self.x + self.size*3, self.y, self.size, self.size)
+        self.body = [self.part1, self.part2, self.part3, self.part4]
 
     def draw(self, screen):
         for part in self.body:
-            pygame.draw.rect(screen, self.color, part)
+            pygame.draw.rect(screen, self.border_color, part)
+            inner_x = part.x + self.border_size
+            inner_y = part.y + self.border_size
+            inner_w = part.width - (self.border_size * 2)
+            inner_h = part.height - (self.border_size * 2)
+            inner_rect = pygame.Rect(inner_x, inner_y, inner_w, inner_h)
+            pygame.draw.rect(screen, self.body_color, inner_rect)
 
     def move(self):
         if self.grow == False:
@@ -58,3 +68,25 @@ class Snake:
 
     def munched(self, snack):
         return pygame.Rect.colliderect(self.body[-1], snack.rect)
+
+    def ifTouchingEdge(self, screen):
+        screen_rect = screen.get_rect()
+        head_rect = self.body[-1]
+        if head_rect.right >= screen_rect.right or head_rect.left <= screen_rect.left or head_rect.top <= screen_rect.top or head_rect.bottom >= screen_rect.bottom:
+            return True
+
+    def ifTouchingSelf(self):
+        for rect in self.body[:-1]:
+            if rect.colliderect(self.body[-1]):
+                return True
+        return False
+
+
+    def reset(self, gridsize):
+        self.size = gridsize
+        self.x, self.y = self.grid_x * gridsize, self.grid_y * gridsize
+        self.part1 = pygame.Rect(self.x, self.y, self.size, self.size)
+        self.part2 = pygame.Rect(self.x + self.size, self.y, self.size, self.size)
+        self.part3 = pygame.Rect(self.x + self.size*2, self.y, self.size, self.size)
+        self.part4 = pygame.Rect(self.x + self.size*3, self.y, self.size, self.size)
+        self.body = [self.part1, self.part2, self.part3, self.part4]     

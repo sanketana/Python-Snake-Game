@@ -6,3 +6,5 @@
 - Grid
 - Sound effects
 - Corner edges
+- play pause
+- corner cases
